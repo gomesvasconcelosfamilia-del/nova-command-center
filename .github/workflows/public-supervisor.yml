@@ -1,5 +1,9 @@
 name: NOVA public supervisor
 on:
+  pull_request:
+    paths:
+      - scripts/public_supervisor.py
+      - .github/workflows/public-supervisor.yml
   schedule:
     - cron: '41 8 * * *'
   workflow_dispatch:
