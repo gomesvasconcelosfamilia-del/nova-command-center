@@ -1,0 +1,28 @@
+name: NOVA public supervisor
+on:
+  schedule:
+    - cron: '41 8 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate read-only public repository report
+        run: python scripts/public_supervisor.py
+      - name: Attach reports to this run (not to GitHub Pages)
+        uses: actions/upload-artifact@v4
+        with:
+          name: nova-public-supervisor
+          path: reports/
+          retention-days: 14
